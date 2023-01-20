@@ -16,6 +16,7 @@ const userSchema = new mongoose_1.default.Schema({
     password: {
         type: String,
         minLength: [6, "Password must be at least 6 characters"],
+        required: true,
     },
     image: String,
     favourites: {
@@ -25,7 +26,8 @@ const userSchema = new mongoose_1.default.Schema({
     },
     reserved: {
         type: [reserveSchema_1.reserveSchema],
-        ref: "Property",
         default: [],
     },
 });
+const User = mongoose_1.default.model("User", userSchema);
+exports.default = User;
