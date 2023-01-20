@@ -27,14 +27,10 @@ export const createUser = async (userData: IUser) => {
 };
 
 export const loginUser = async (email: string, password: string) => {
-  const user = await User.findOne({ email }).populate(
-    "favourites reserved.property"
-  );
+  const user = await User.findOne({ email });
   if (!user) {
     throw new CustomError("Not Found Error", "User not found");
   }
-
-  console.log("s");
 
   const isPasswordCorrect = await comparePasswords(password, user.password);
   if (!isPasswordCorrect) {

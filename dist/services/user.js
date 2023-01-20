@@ -36,11 +36,10 @@ const createUser = (userData) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.createUser = createUser;
 const loginUser = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield userSchema_1.default.findOne({ email }).populate("favourites reserved.property");
+    const user = yield userSchema_1.default.findOne({ email });
     if (!user) {
         throw new customError_1.CustomError("Not Found Error", "User not found");
     }
-    console.log("s");
     const isPasswordCorrect = yield comparePasswords(password, user.password);
     if (!isPasswordCorrect) {
         throw new customError_1.CustomError("Authentication Error", "Incorrect email or password");

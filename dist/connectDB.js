@@ -7,6 +7,7 @@ exports.connect = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
+mongoose_1.default.set("strictQuery", true);
 const MONGO_URI = process.env.MONGO_URI;
 const connect = () => {
     mongoose_1.default.connect(MONGO_URI, () => {
