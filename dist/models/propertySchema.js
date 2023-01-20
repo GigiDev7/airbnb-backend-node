@@ -42,6 +42,20 @@ const propertySchema = new mongoose_1.default.Schema({
         type: [String],
         default: [],
     },
+    propertyType: {
+        type: String,
+        enum: {
+            values: ["House", "Apartment", "Guesthouse", "Hotel"],
+            message: "{VALUE} is not supported",
+        },
+    },
+    typeOfPlace: {
+        type: String,
+        enum: {
+            values: ["Entire place", "Private room", "Shared room"],
+            message: "{VALUE} is not supported",
+        },
+    },
     bookedDates: {
         type: [bookingSchema_1.bookingSchema],
         default: [],
