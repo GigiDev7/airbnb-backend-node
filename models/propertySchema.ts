@@ -1,9 +1,13 @@
 import mongoose from "mongoose";
-import { reserveSchema } from "./reserveSchema";
+import { bookingSchema } from "./bookingSchema";
 import { reviewSchema } from "./reviewSchema";
 
 const propertySchema = new mongoose.Schema(
   {
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     title: {
       type: String,
       required: true,
@@ -35,8 +39,8 @@ const propertySchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
-    reservedDates: {
-      type: [reserveSchema],
+    bookedDates: {
+      type: [bookingSchema],
       default: [],
     },
   },

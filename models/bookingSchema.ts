@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-export const reserveSchema = new mongoose.Schema(
+export const bookingSchema = new mongoose.Schema(
   {
-    property: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Property",
+      ref: "User",
     },
     checkIn: Date,
     checkOut: Date,

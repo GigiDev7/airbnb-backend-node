@@ -4,9 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-const reserveSchema_1 = require("./reserveSchema");
+const bookingSchema_1 = require("./bookingSchema");
 const reviewSchema_1 = require("./reviewSchema");
 const propertySchema = new mongoose_1.default.Schema({
+    createdBy: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: "User",
+    },
     title: {
         type: String,
         required: true,
@@ -38,8 +42,8 @@ const propertySchema = new mongoose_1.default.Schema({
         type: [String],
         default: [],
     },
-    reservedDates: {
-        type: [reserveSchema_1.reserveSchema],
+    bookedDates: {
+        type: [bookingSchema_1.bookingSchema],
         default: [],
     },
 }, {
