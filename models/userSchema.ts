@@ -3,6 +3,14 @@ import isEmail from "validator/lib/isEmail";
 import { reserveSchema } from "./reserveSchema";
 
 const userSchema = new mongoose.Schema({
+  firstname: {
+    type: String,
+    required: true,
+  },
+  lastname: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
     validate: [isEmail, "Please provide a valid email address"],

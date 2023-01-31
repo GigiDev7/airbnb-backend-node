@@ -7,6 +7,14 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const isEmail_1 = __importDefault(require("validator/lib/isEmail"));
 const reserveSchema_1 = require("./reserveSchema");
 const userSchema = new mongoose_1.default.Schema({
+    firstname: {
+        type: String,
+        required: true,
+    },
+    lastname: {
+        type: String,
+        required: true,
+    },
     email: {
         type: String,
         validate: [isEmail_1.default, "Please provide a valid email address"],

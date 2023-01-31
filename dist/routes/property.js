@@ -7,5 +7,5 @@ const express_1 = __importDefault(require("express"));
 const property_1 = require("../controllers/property");
 const protectAuth_1 = require("../middlewares/protectAuth");
 const router = express_1.default.Router();
-router.route("").post(protectAuth_1.protectAuth, property_1.addProperty);
+router.route("").post(protectAuth_1.protectAuth, property_1.addProperty).get(property_1.getProperties);
 exports.default = router;

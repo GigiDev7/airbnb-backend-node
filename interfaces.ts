@@ -15,6 +15,8 @@ interface IReserver {
 
 export interface IUser {
   _id: mongoose.Types.ObjectId;
+  firstname: string;
+  lastname: string;
   email?: string;
   password: string;
   image?: string;

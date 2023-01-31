@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addProperty = void 0;
+exports.getProperties = exports.addProperty = void 0;
 const property_1 = require("../services/property");
 const addProperty = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -21,3 +21,13 @@ const addProperty = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.addProperty = addProperty;
+const getProperties = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const properties = yield (0, property_1.findProperties)();
+        res.status(200).json(properties);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.getProperties = getProperties;
