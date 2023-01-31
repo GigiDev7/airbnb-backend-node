@@ -6,10 +6,17 @@ export const ratingSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    propertyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Property",
+    },
     rating: Number,
   },
   {
-    _id: false,
     timestamps: true,
   }
 );
+
+const Rating = mongoose.model("Rating", ratingSchema);
+
+export default Rating;

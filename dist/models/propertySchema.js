@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const bookingSchema_1 = require("./bookingSchema");
-const ratinsSchema_1 = require("./ratinsSchema");
 const propertySchema = new mongoose_1.default.Schema({
     createdBy: {
         type: mongoose_1.default.Schema.Types.ObjectId,
@@ -31,10 +30,6 @@ const propertySchema = new mongoose_1.default.Schema({
     bedsQuantity: Number,
     images: {
         type: [String],
-        default: [],
-    },
-    ratings: {
-        type: [ratinsSchema_1.ratingSchema],
         default: [],
     },
     price: Number,

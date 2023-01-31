@@ -6,6 +6,7 @@ import { connect } from "./connectDB";
 import userRouter from "./routes/user";
 import propertyRouter from "./routes/property";
 import reviewsRouter from "./routes/reviews";
+import ratingsRouter from "./routes/ratings";
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(cors());
 app.use("/user", userRouter);
 app.use("/property", propertyRouter);
 app.use("/reviews", reviewsRouter);
+app.use("/ratings", ratingsRouter);
 
 app.use(errorHandler);
 
