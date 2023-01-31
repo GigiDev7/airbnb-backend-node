@@ -6,5 +6,8 @@ export const createProperty = (propertyData: IProperty) => {
 };
 
 export const findProperties = () => {
-  return Property.find().populate("createdBy", "-password -__v");
+  return Property.find().populate(
+    "createdBy ratings reviews",
+    "-password -__v"
+  );
 };

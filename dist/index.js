@@ -10,12 +10,14 @@ const errorHandler_1 = require("./middlewares/errorHandler");
 const connectDB_1 = require("./connectDB");
 const user_1 = __importDefault(require("./routes/user"));
 const property_1 = __importDefault(require("./routes/property"));
+const reviews_1 = __importDefault(require("./routes/reviews"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 app.use("/user", user_1.default);
 app.use("/property", property_1.default);
+app.use("/reviews", reviews_1.default);
 app.use(errorHandler_1.errorHandler);
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {

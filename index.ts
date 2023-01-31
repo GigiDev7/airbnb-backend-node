@@ -5,6 +5,7 @@ import { errorHandler } from "./middlewares/errorHandler";
 import { connect } from "./connectDB";
 import userRouter from "./routes/user";
 import propertyRouter from "./routes/property";
+import reviewsRouter from "./routes/reviews";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(cors());
 
 app.use("/user", userRouter);
 app.use("/property", propertyRouter);
+app.use("/reviews", reviewsRouter);
 
 app.use(errorHandler);
 
