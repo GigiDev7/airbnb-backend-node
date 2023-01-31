@@ -4,6 +4,7 @@ import cors from "cors";
 import { errorHandler } from "./middlewares/errorHandler";
 import { connect } from "./connectDB";
 import userRouter from "./routes/user";
+import propertyRouter from "./routes/property";
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/user", userRouter);
+app.use("/property", propertyRouter);
 
 app.use(errorHandler);
 

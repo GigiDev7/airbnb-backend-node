@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
-export const reviewSchema = new mongoose.Schema(
+export const ratingSchema = new mongoose.Schema(
   {
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    review: String,
+    rating: Number,
   },
   {
     _id: false,

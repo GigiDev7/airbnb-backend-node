@@ -11,6 +11,9 @@ const errorHandler = (err, req, res, next) => {
     else if (err.name === "Validation Error") {
         res.status(403).json({ message: err.message || "Something went wrong" });
     }
+    else if ((err === null || err === void 0 ? void 0 : err.code) === 11000) {
+        res.status(422).json({ message: "User already exists" });
+    }
     else {
         res.status(500).json(err);
     }

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { bookingSchema } from "./bookingSchema";
+import { ratingSchema } from "./ratinsSchema";
 import { reviewSchema } from "./reviewSchema";
 
 const propertySchema = new mongoose.Schema(
@@ -31,6 +32,10 @@ const propertySchema = new mongoose.Schema(
       default: [],
     },
     ratings: {
+      type: [ratingSchema],
+      default: [],
+    },
+    reviews: {
       type: [reviewSchema],
       default: [],
     },
