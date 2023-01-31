@@ -1,11 +1,8 @@
 import mongoose from "mongoose";
+import { Request } from "express";
 
-interface IBooking {
-  user: mongoose.Types.ObjectId;
-  checkIn: Date;
-  checkOut: Date;
-  guests: number;
-  totalPrice: number;
+export interface CustomRequest extends Request {
+  user: IUser;
 }
 
 interface IReserver {
@@ -18,7 +15,7 @@ interface IReserver {
 
 export interface IUser {
   _id: mongoose.Types.ObjectId;
-  email: string;
+  email?: string;
   password: string;
   image?: string;
   favourites?: mongoose.Types.ObjectId[];

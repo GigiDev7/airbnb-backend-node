@@ -13,7 +13,7 @@ exports.addProperty = void 0;
 const property_1 = require("../services/property");
 const addProperty = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const property = yield (0, property_1.createProperty)(req.body);
+        const property = yield (0, property_1.createProperty)(Object.assign(Object.assign({}, req.body), { createdBy: req.user._id }));
         res.status(201).json(property);
     }
     catch (error) {
