@@ -63,8 +63,6 @@ export interface IProperty {
   rooms: Rooms;
   bedsQuantity: number;
   images: string[];
-  reviews: Review[];
-  ratings: Rating[];
   price: number;
   amenities: string[];
   propertyType: string;

@@ -10,6 +10,6 @@ const createProperty = (propertyData) => {
 };
 exports.createProperty = createProperty;
 const findProperties = () => {
-    return propertySchema_1.default.find().populate("createdBy ratings reviews", "-password -__v");
+    return propertySchema_1.default.find().populate("createdBy", "-password -__v");
 };
 exports.findProperties = findProperties;

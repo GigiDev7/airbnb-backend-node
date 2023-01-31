@@ -6,10 +6,17 @@ export const reviewSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    propertyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Property",
+    },
     review: String,
   },
   {
-    _id: false,
     timestamps: true,
   }
 );
+
+const Review = mongoose.model("Review", reviewSchema);
+
+export default Review;

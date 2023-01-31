@@ -1,17 +1,21 @@
 import mongoose from "mongoose";
-import Property from "../models/propertySchema";
-import { CustomError } from "../utils/customError";
+import Review from "../models/reviewSchema";
 
-export const createReview = async (
+export const createReview = (
   propertyId: mongoose.Types.ObjectId,
   userId: mongoose.Types.ObjectId,
   review: string
 ) => {
-  const property = await Property.findById(propertyId);
-  if (!property) {
-    throw new CustomError("NotFound Error", "Property not found");
-  }
-  property.reviews.push({ author: userId, review });
-  await property.save();
-  return property;
+  return Review.create({ author: userId, review, propertyId });
+};
+
+export const removeReview = (reviewId: mongoose.Types.ObjectId) => {
+  return Review.findByIdAndDelete(reviewId);
+};
+
+export const patchReview = (
+  reviewId: mongoose.Types.ObjectId,
+  review: string
+) => {
+  return Review.findByIdAndUpdate(reviewId, { review }, { new: true });
 };

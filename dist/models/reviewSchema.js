@@ -10,8 +10,13 @@ exports.reviewSchema = new mongoose_1.default.Schema({
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: "User",
     },
+    propertyId: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: "Property",
+    },
     review: String,
 }, {
-    _id: false,
     timestamps: true,
 });
+const Review = mongoose_1.default.model("Review", exports.reviewSchema);
+exports.default = Review;

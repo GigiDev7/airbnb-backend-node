@@ -8,5 +8,6 @@ const reviews_1 = require("../controllers/reviews");
 const protectAuth_1 = require("../middlewares/protectAuth");
 const router = express_1.default.Router();
 router.use(protectAuth_1.protectAuth);
-router.route("/:propertyId").post(reviews_1.addReview);
+router.route("/property/:propertyId").post(reviews_1.addReview);
+router.route("/:reviewId").delete(reviews_1.deleteReview).patch(reviews_1.updateReview);
 exports.default = router;

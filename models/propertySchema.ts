@@ -35,10 +35,6 @@ const propertySchema = new mongoose.Schema(
       type: [ratingSchema],
       default: [],
     },
-    reviews: {
-      type: [reviewSchema],
-      default: [],
-    },
     price: Number,
     amenities: {
       type: [String],
