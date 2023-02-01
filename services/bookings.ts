@@ -18,13 +18,18 @@ export const addBooking = (
   });
 };
 
-export const getBookingsByUser = (
-  userId: mongoose.Types.ObjectId,
+export const getBookingsByUserOrProperty = (
+  id: mongoose.Types.ObjectId,
+  type: "User" | "Property",
   query: any
 ) => {
-  const filterObject: any = {
-    user: userId,
-  };
+  const filterObject: any = {};
+
+  if (type === "User") {
+    filterObject.user = id;
+  } else {
+    filterObject.property = id;
+  }
 
   if (query.active) {
     filterObject.checkOut = { $gte: new Date() };
