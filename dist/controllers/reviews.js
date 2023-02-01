@@ -29,7 +29,8 @@ exports.addReview = addReview;
 const deleteReview = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const reviewId = new mongoose_1.default.Types.ObjectId(req.params.reviewId);
-        yield (0, reviews_1.removeReview)(reviewId);
+        const userId = req.user._id;
+        yield (0, reviews_1.removeReview)(reviewId, userId);
         res.status(204).send();
     }
     catch (error) {
@@ -40,8 +41,9 @@ exports.deleteReview = deleteReview;
 const updateReview = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const reviewId = new mongoose_1.default.Types.ObjectId(req.params.reviewId);
-        const review = yield (0, reviews_1.patchReview)(reviewId, req.body.review);
-        res.status(200).json(review);
+        const userId = req.user._id;
+        yield (0, reviews_1.patchReview)(reviewId, userId, req.body.review);
+        res.status(200).json({ message: "Review updated successfully" });
     }
     catch (error) {
         next(error);

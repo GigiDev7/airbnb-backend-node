@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Review from "../models/reviewSchema";
+import { checkAuthor } from "../utils/checkAuthor";
 
 export const createReview = (
   propertyId: mongoose.Types.ObjectId,
@@ -9,13 +10,25 @@ export const createReview = (
   return Review.create({ author: userId, review, propertyId });
 };
 
-export const removeReview = (reviewId: mongoose.Types.ObjectId) => {
-  return Review.findByIdAndDelete(reviewId);
+export const removeReview = async (
+  reviewId: mongoose.Types.ObjectId,
+  userId: mongoose.Types.ObjectId
+) => {
+  const review = await Review.findById(reviewId);
+
+  checkAuthor(review, userId, "Review");
+
+  await review!.deleteOne();
 };
 
-export const patchReview = (
+export const patchReview = async (
   reviewId: mongoose.Types.ObjectId,
+  userId: mongoose.Types.ObjectId,
   review: string
 ) => {
-  return Review.findByIdAndUpdate(reviewId, { review }, { new: true });
+  const doc = await Review.findById(reviewId);
+
+  checkAuthor(doc, userId, "Review");
+
+  await doc!.updateOne({ review });
 };

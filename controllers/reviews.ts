@@ -28,7 +28,8 @@ export const deleteReview = async (
 ) => {
   try {
     const reviewId = new mongoose.Types.ObjectId(req.params.reviewId);
-    await removeReview(reviewId);
+    const userId = (req as CustomRequest).user._id;
+    await removeReview(reviewId, userId);
     res.status(204).send();
   } catch (error) {
     next(error);
@@ -42,8 +43,9 @@ export const updateReview = async (
 ) => {
   try {
     const reviewId = new mongoose.Types.ObjectId(req.params.reviewId);
-    const review = await patchReview(reviewId, req.body.review);
-    res.status(200).json(review);
+    const userId = (req as CustomRequest).user._id;
+    await patchReview(reviewId, userId, req.body.review);
+    res.status(200).json({ message: "Review updated successfully" });
   } catch (error) {
     next(error);
   }

@@ -29,8 +29,9 @@ exports.addNewRating = addNewRating;
 const updateRating = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const ratingId = new mongoose_1.default.Types.ObjectId(req.params.ratingId);
-        const rating = yield (0, ratings_1.patchRating)(ratingId, req.body.rating);
-        res.status(200).json(rating);
+        const userId = req.user._id;
+        yield (0, ratings_1.patchRating)(ratingId, userId, req.body.rating);
+        res.status(200).json({ message: "Rating updated successfully" });
     }
     catch (error) {
         next(error);

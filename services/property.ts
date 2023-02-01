@@ -54,7 +54,7 @@ export const removeProperty = async (
 
   checkPropertyHelper(property, userId);
 
-  await property!.delete();
+  await property!.deleteOne();
 };
 
 export const findPropertyAndUpdate = async (

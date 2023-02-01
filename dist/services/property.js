@@ -50,7 +50,7 @@ exports.findSingleProperty = findSingleProperty;
 const removeProperty = (propertyId, userId) => __awaiter(void 0, void 0, void 0, function* () {
     const property = yield propertySchema_1.default.findById(propertyId);
     checkPropertyHelper(property, userId);
-    yield property.delete();
+    yield property.deleteOne();
 });
 exports.removeProperty = removeProperty;
 const findPropertyAndUpdate = (propertyId, userId, propertyData) => __awaiter(void 0, void 0, void 0, function* () {

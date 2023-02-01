@@ -28,8 +28,9 @@ export const updateRating = async (
 ) => {
   try {
     const ratingId = new mongoose.Types.ObjectId(req.params.ratingId);
-    const rating = await patchRating(ratingId, req.body.rating);
-    res.status(200).json(rating);
+    const userId = (req as CustomRequest).user._id;
+    await patchRating(ratingId, userId, req.body.rating);
+    res.status(200).json({ message: "Rating updated successfully" });
   } catch (error) {
     next(error);
   }
