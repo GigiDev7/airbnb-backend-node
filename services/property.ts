@@ -25,8 +25,32 @@ export const createProperty = (propertyData: IProperty) => {
   return Property.create(propertyData);
 };
 
-export const findProperties = () => {
-  return Property.find({}, "-__v").populate("createdBy", "-password -__v");
+export const findProperties = (query: any) => {
+  const filterObject: any = {};
+
+  if (query.city) {
+    filterObject["location.city"] = query.city;
+  }
+  if (query.ownerId) {
+    filterObject.createdBy = query.ownerId;
+  }
+  if (query.guests) {
+    filterObject.maxGuests = { $gte: query.guests };
+  }
+  if (query.beds) {
+    filterObject.bedsQuantity = { $gte: query.beds };
+  }
+  if (query.minPrice) {
+    filterObject.price = { $gte: query.minPrice };
+  }
+  if (query.maxPrice) {
+    filterObject.price = { ...filterObject.price, $lte: query.maxPrice };
+  }
+
+  return Property.find(filterObject, "-__v").populate(
+    "createdBy",
+    "-password -__v"
+  );
 };
 
 export const findSingleProperty = async (

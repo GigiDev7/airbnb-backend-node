@@ -31,7 +31,7 @@ export const getProperties = async (
   next: NextFunction
 ) => {
   try {
-    const properties = await findProperties();
+    const properties = await findProperties(req.query);
     res.status(200).json(properties);
   } catch (error) {
     next(error);

@@ -27,7 +27,7 @@ const addProperty = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
 exports.addProperty = addProperty;
 const getProperties = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const properties = yield (0, property_1.findProperties)();
+        const properties = yield (0, property_1.findProperties)(req.query);
         res.status(200).json(properties);
     }
     catch (error) {
