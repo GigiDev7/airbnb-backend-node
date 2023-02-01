@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { bookingSchema } from "./bookingSchema";
 
 const propertySchema = new mongoose.Schema(
   {
@@ -47,10 +46,6 @@ const propertySchema = new mongoose.Schema(
         values: ["Entire place", "Private room", "Shared room"],
         message: "{VALUE} is not supported",
       },
-    },
-    bookedDates: {
-      type: [bookingSchema],
-      default: [],
     },
   },
   {

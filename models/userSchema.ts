@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import isEmail from "validator/lib/isEmail";
-import { reserveSchema } from "./reserveSchema";
 
 const userSchema = new mongoose.Schema({
   firstname: {
@@ -26,10 +25,6 @@ const userSchema = new mongoose.Schema({
   favourites: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "Property",
-    default: [],
-  },
-  reserved: {
-    type: [reserveSchema],
     default: [],
   },
 });

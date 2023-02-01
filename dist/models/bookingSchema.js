@@ -10,11 +10,16 @@ exports.bookingSchema = new mongoose_1.default.Schema({
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: "User",
     },
+    property: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: "Property",
+    },
     checkIn: Date,
     checkOut: Date,
     guests: Number,
     totalPrice: Number,
 }, {
-    _id: false,
     timestamps: true,
 });
+const Booking = mongoose_1.default.model("Booking", exports.bookingSchema);
+exports.default = Booking;

@@ -5,14 +5,6 @@ export interface CustomRequest extends Request {
   user: IUser;
 }
 
-interface IReserver {
-  property: mongoose.Types.ObjectId;
-  checkIn: Date;
-  checkOut: Date;
-  guests: number;
-  totalPrice: number;
-}
-
 export interface IUser {
   _id: mongoose.Types.ObjectId;
   firstname: string;
@@ -21,7 +13,6 @@ export interface IUser {
   password: string;
   image?: string;
   favourites?: mongoose.Types.ObjectId[];
-  reserverd?: IReserver[];
 }
 
 type Location = {
@@ -46,13 +37,14 @@ type Review = {
   review: string;
 };
 
-type Booking = {
+interface IBooking {
   user: mongoose.Types.ObjectId;
+  property: mongoose.Types.ObjectId;
   checkin: Date;
   checkout: Date;
   guests: number;
   totalPrice: number;
-};
+}
 
 export interface IProperty {
   createdBy: mongoose.Types.ObjectId;
@@ -67,5 +59,4 @@ export interface IProperty {
   amenities: string[];
   propertyType: string;
   typeOfPlace: string;
-  bookedDates: Booking[];
 }

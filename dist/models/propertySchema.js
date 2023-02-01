@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-const bookingSchema_1 = require("./bookingSchema");
 const propertySchema = new mongoose_1.default.Schema({
     createdBy: {
         type: mongoose_1.default.Schema.Types.ObjectId,
@@ -50,10 +49,6 @@ const propertySchema = new mongoose_1.default.Schema({
             values: ["Entire place", "Private room", "Shared room"],
             message: "{VALUE} is not supported",
         },
-    },
-    bookedDates: {
-        type: [bookingSchema_1.bookingSchema],
-        default: [],
     },
 }, {
     timestamps: true,
