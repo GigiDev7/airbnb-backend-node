@@ -17,3 +17,7 @@ export const addBooking = (
     property: propertyId,
   });
 };
+
+export const getBookingsByUser = (userId: mongoose.Types.ObjectId) => {
+  return Booking.find({ user: userId });
+};

@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createBooking = void 0;
+exports.getPersonalBookings = exports.createBooking = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const bookings_1 = require("../services/bookings");
 const createBooking = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -39,3 +39,14 @@ const createBooking = (req, res, next) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.createBooking = createBooking;
+const getPersonalBookings = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.user._id;
+        const bookings = yield (0, bookings_1.getBookingsByUser)(userId);
+        res.status(200).json(bookings);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.getPersonalBookings = getPersonalBookings;
