@@ -38,10 +38,10 @@ const findSingleProperty = (propertyId) => __awaiter(void 0, void 0, void 0, fun
         .populate("createdBy", "-password -__v")
         .exec();
     const ratings = ratingSchema_1.default.find({ propertyId })
-        .populate("author", "-password -__v")
+        .populate("user", "-password -__v")
         .exec();
     const reviews = reviewSchema_1.default.find({ propertyId })
-        .populate("author", "-password -__v")
+        .populate("user", "-password -__v")
         .exec();
     const result = yield Promise.all([property, ratings, reviews]);
     return result;

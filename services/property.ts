@@ -36,10 +36,10 @@ export const findSingleProperty = async (
     .populate("createdBy", "-password -__v")
     .exec();
   const ratings = Rating.find({ propertyId })
-    .populate("author", "-password -__v")
+    .populate("user", "-password -__v")
     .exec();
   const reviews = Review.find({ propertyId })
-    .populate("author", "-password -__v")
+    .populate("user", "-password -__v")
     .exec();
 
   const result = await Promise.all([property, ratings, reviews]);

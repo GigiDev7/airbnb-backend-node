@@ -28,12 +28,12 @@ type Rooms = {
 };
 
 type Rating = {
-  author: mongoose.Types.ObjectId;
+  user: mongoose.Types.ObjectId;
   rating: number;
 };
 
 type Review = {
-  author: mongoose.Types.ObjectId;
+  user: mongoose.Types.ObjectId;
   review: string;
 };
 
