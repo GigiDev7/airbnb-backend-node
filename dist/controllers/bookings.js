@@ -42,7 +42,7 @@ exports.createBooking = createBooking;
 const getPersonalBookings = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.user._id;
-        const bookings = yield (0, bookings_1.getBookingsByUser)(userId);
+        const bookings = yield (0, bookings_1.getBookingsByUser)(userId, req.query);
         res.status(200).json(bookings);
     }
     catch (error) {

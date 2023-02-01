@@ -26,7 +26,7 @@ export const getPersonalBookings = async (
 ) => {
   try {
     const userId = (req as CustomRequest).user._id;
-    const bookings = await getBookingsByUser(userId);
+    const bookings = await getBookingsByUser(userId, req.query);
     res.status(200).json(bookings);
   } catch (error) {
     next(error);

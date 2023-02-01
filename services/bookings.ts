@@ -18,6 +18,17 @@ export const addBooking = (
   });
 };
 
-export const getBookingsByUser = (userId: mongoose.Types.ObjectId) => {
-  return Booking.find({ user: userId });
+export const getBookingsByUser = (
+  userId: mongoose.Types.ObjectId,
+  query: any
+) => {
+  const filterObject: any = {
+    user: userId,
+  };
+
+  if (query.active) {
+    filterObject.checkOut = { $gte: new Date() };
+  }
+
+  return Booking.find(filterObject);
 };

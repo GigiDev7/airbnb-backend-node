@@ -9,7 +9,13 @@ const addBooking = (userId, propertyId, bookingDetails) => {
     return bookingSchema_1.default.create(Object.assign(Object.assign({}, bookingDetails), { user: userId, property: propertyId }));
 };
 exports.addBooking = addBooking;
-const getBookingsByUser = (userId) => {
-    return bookingSchema_1.default.find({ user: userId });
+const getBookingsByUser = (userId, query) => {
+    const filterObject = {
+        user: userId,
+    };
+    if (query.active) {
+        filterObject.checkOut = { $gte: new Date() };
+    }
+    return bookingSchema_1.default.find(filterObject);
 };
 exports.getBookingsByUser = getBookingsByUser;
