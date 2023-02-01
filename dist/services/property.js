@@ -49,6 +49,14 @@ const findProperties = (query) => {
     if (query.maxPrice) {
         filterObject.price = Object.assign(Object.assign({}, filterObject.price), { $lte: query.maxPrice });
     }
+    if (query.propertyType) {
+        const propertyTypes = query.propertyType.split(",");
+        filterObject.propertyType = { $in: propertyTypes };
+    }
+    if (query.typeOfPlace) {
+        const types = query.typeOfPlace.split(",");
+        filterObject.typeOfPlace = { $in: types };
+    }
     return propertySchema_1.default.find(filterObject, "-__v").populate("createdBy", "-password -__v");
 };
 exports.findProperties = findProperties;

@@ -46,6 +46,14 @@ export const findProperties = (query: any) => {
   if (query.maxPrice) {
     filterObject.price = { ...filterObject.price, $lte: query.maxPrice };
   }
+  if (query.propertyType) {
+    const propertyTypes = query.propertyType.split(",");
+    filterObject.propertyType = { $in: propertyTypes };
+  }
+  if (query.typeOfPlace) {
+    const types = query.typeOfPlace.split(",");
+    filterObject.typeOfPlace = { $in: types };
+  }
 
   return Property.find(filterObject, "-__v").populate(
     "createdBy",
