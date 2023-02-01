@@ -17,6 +17,14 @@ const propertySchema_1 = __importDefault(require("../models/propertySchema"));
 const ratingSchema_1 = __importDefault(require("../models/ratingSchema"));
 const reviewSchema_1 = __importDefault(require("../models/reviewSchema"));
 const customError_1 = require("../utils/customError");
+const checkPropertyHelper = (property, userId) => {
+    if (!property) {
+        throw new customError_1.CustomError("NotFoundError", "Property not found");
+    }
+    if (!property.createdBy.equals(userId)) {
+        throw new customError_1.CustomError("Authorization Error", "You are not authorized to continue");
+    }
+};
 const createProperty = (propertyData) => {
     return propertySchema_1.default.create(propertyData);
 };
@@ -40,26 +48,14 @@ const findSingleProperty = (propertyId) => __awaiter(void 0, void 0, void 0, fun
 });
 exports.findSingleProperty = findSingleProperty;
 const removeProperty = (propertyId, userId) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     const property = yield propertySchema_1.default.findById(propertyId);
-    if (!property) {
-        throw new customError_1.CustomError("NotFoundError", "Property not found");
-    }
-    if (!((_a = property.createdBy) === null || _a === void 0 ? void 0 : _a.equals(userId))) {
-        throw new customError_1.CustomError("Authorization Error", "You are not authorized to continue");
-    }
+    checkPropertyHelper(property, userId);
     yield property.delete();
 });
 exports.removeProperty = removeProperty;
 const findPropertyAndUpdate = (propertyId, userId, propertyData) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b;
     let property = yield propertySchema_1.default.findById(propertyId);
-    if (!property) {
-        throw new customError_1.CustomError("NotFoundError", "Property not found");
-    }
-    if (!((_b = property.createdBy) === null || _b === void 0 ? void 0 : _b._id.equals(userId))) {
-        throw new customError_1.CustomError("Authorization Error", "You are not authorized to continue");
-    }
+    checkPropertyHelper(property, userId);
     yield property.updateOne(propertyData, { new: true });
 });
 exports.findPropertyAndUpdate = findPropertyAndUpdate;

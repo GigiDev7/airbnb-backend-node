@@ -5,6 +5,22 @@ import Rating from "../models/ratingSchema";
 import Review from "../models/reviewSchema";
 import { CustomError } from "../utils/customError";
 
+const checkPropertyHelper = (
+  property: any,
+  userId: mongoose.Types.ObjectId
+) => {
+  if (!property) {
+    throw new CustomError("NotFoundError", "Property not found");
+  }
+
+  if (!property.createdBy.equals(userId)) {
+    throw new CustomError(
+      "Authorization Error",
+      "You are not authorized to continue"
+    );
+  }
+};
+
 export const createProperty = (propertyData: IProperty) => {
   return Property.create(propertyData);
 };
@@ -36,18 +52,9 @@ export const removeProperty = async (
 ) => {
   const property = await Property.findById(propertyId);
 
-  if (!property) {
-    throw new CustomError("NotFoundError", "Property not found");
-  }
+  checkPropertyHelper(property, userId);
 
-  if (!property.createdBy?.equals(userId)) {
-    throw new CustomError(
-      "Authorization Error",
-      "You are not authorized to continue"
-    );
-  }
-
-  await property.delete();
+  await property!.delete();
 };
 
 export const findPropertyAndUpdate = async (
@@ -57,16 +64,7 @@ export const findPropertyAndUpdate = async (
 ) => {
   let property = await Property.findById(propertyId);
 
-  if (!property) {
-    throw new CustomError("NotFoundError", "Property not found");
-  }
+  checkPropertyHelper(property, userId);
 
-  if (!property.createdBy?._id.equals(userId)) {
-    throw new CustomError(
-      "Authorization Error",
-      "You are not authorized to continue"
-    );
-  }
-
-  await property.updateOne(propertyData, { new: true });
+  await property!.updateOne(propertyData, { new: true });
 };
