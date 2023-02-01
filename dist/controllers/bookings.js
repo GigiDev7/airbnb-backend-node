@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getBookingsForProperty = exports.getPersonalBookings = exports.createBooking = void 0;
+exports.removeBooking = exports.updateBooking = exports.getBookingsForProperty = exports.getPersonalBookings = exports.createBooking = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const bookings_1 = require("../services/bookings");
 const createBooking = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -61,3 +61,27 @@ const getBookingsForProperty = (req, res, next) => __awaiter(void 0, void 0, voi
     }
 });
 exports.getBookingsForProperty = getBookingsForProperty;
+const updateBooking = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const bookingId = new mongoose_1.default.Types.ObjectId(req.params.bookingId);
+        const userId = req.user._id;
+        yield (0, bookings_1.findBookingAndUpdate)(bookingId, userId, req.body);
+        res.status(200).json({ message: "Bookings updated successfully" });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.updateBooking = updateBooking;
+const removeBooking = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const bookingId = new mongoose_1.default.Types.ObjectId(req.params.bookingId);
+        const userId = req.user._id;
+        yield (0, bookings_1.deleteBooking)(bookingId, userId);
+        res.status(204).send();
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.removeBooking = removeBooking;

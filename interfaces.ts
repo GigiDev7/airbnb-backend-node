@@ -37,7 +37,7 @@ type Review = {
   review: string;
 };
 
-interface IBooking {
+export interface IBooking {
   user: mongoose.Types.ObjectId;
   property: mongoose.Types.ObjectId;
   checkin: Date;

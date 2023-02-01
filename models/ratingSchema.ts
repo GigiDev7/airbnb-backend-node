@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export const ratingSchema = new mongoose.Schema(
   {
-    author: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },

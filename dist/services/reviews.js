@@ -14,20 +14,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.patchReview = exports.removeReview = exports.createReview = void 0;
 const reviewSchema_1 = __importDefault(require("../models/reviewSchema"));
-const checkAuthor_1 = require("../utils/checkAuthor");
+const checkUser_1 = require("../utils/checkUser");
 const createReview = (propertyId, userId, review) => {
-    return reviewSchema_1.default.create({ author: userId, review, propertyId });
+    return reviewSchema_1.default.create({ user: userId, review, propertyId });
 };
 exports.createReview = createReview;
 const removeReview = (reviewId, userId) => __awaiter(void 0, void 0, void 0, function* () {
     const review = yield reviewSchema_1.default.findById(reviewId);
-    (0, checkAuthor_1.checkAuthor)(review, userId, "Review");
+    (0, checkUser_1.checkUser)(review, userId, "Review");
     yield review.deleteOne();
 });
 exports.removeReview = removeReview;
 const patchReview = (reviewId, userId, review) => __awaiter(void 0, void 0, void 0, function* () {
     const doc = yield reviewSchema_1.default.findById(reviewId);
-    (0, checkAuthor_1.checkAuthor)(doc, userId, "Review");
+    (0, checkUser_1.checkUser)(doc, userId, "Review");
     yield doc.updateOne({ review });
 });
 exports.patchReview = patchReview;

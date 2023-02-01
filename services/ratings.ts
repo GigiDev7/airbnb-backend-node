@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 import Rating from "../models/ratingSchema";
-import { checkAuthor } from "../utils/checkAuthor";
+import { checkUser } from "../utils/checkUser";
 
 export const addRating = (
   userId: mongoose.Types.ObjectId,
   propertyId: mongoose.Types.ObjectId,
   rating: number
 ) => {
-  return Rating.create({ author: userId, propertyId, rating });
+  return Rating.create({ user: userId, propertyId, rating });
 };
 
 export const patchRating = async (
@@ -17,7 +17,7 @@ export const patchRating = async (
 ) => {
   const doc = await Rating.findById(ratingId);
 
-  checkAuthor(doc, userId, "Rating");
+  checkUser(doc, userId, "Rating");
 
   await doc!.updateOne({ rating });
 };
