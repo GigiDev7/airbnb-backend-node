@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSingleProperty = exports.getProperties = exports.addProperty = void 0;
+exports.updateProperty = exports.deleteProperty = exports.getSingleProperty = exports.getProperties = exports.addProperty = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const property_1 = require("../services/property");
 const addProperty = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -48,3 +48,27 @@ const getSingleProperty = (req, res, next) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.getSingleProperty = getSingleProperty;
+const deleteProperty = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const propertyId = new mongoose_1.default.Types.ObjectId(req.params.propertyId);
+        const userId = req.user._id;
+        yield (0, property_1.removeProperty)(propertyId, userId);
+        res.status(204).send();
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.deleteProperty = deleteProperty;
+const updateProperty = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const propertyId = new mongoose_1.default.Types.ObjectId(req.params.propertyId);
+        const userId = req.user._id;
+        yield (0, property_1.findPropertyAndUpdate)(propertyId, userId, req.body);
+        res.status(200).json({ message: " Updated successfully" });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.updateProperty = updateProperty;

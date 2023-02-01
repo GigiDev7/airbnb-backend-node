@@ -4,7 +4,9 @@ import { CustomRequest } from "../interfaces";
 import {
   createProperty,
   findProperties,
+  findPropertyAndUpdate,
   findSingleProperty,
+  removeProperty,
 } from "../services/property";
 
 export const addProperty = async (
@@ -47,6 +49,36 @@ export const getSingleProperty = async (
     res
       .status(200)
       .json({ property: result[0], ratings: result[1], reviews: result[2] });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteProperty = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const propertyId = new mongoose.Types.ObjectId(req.params.propertyId);
+    const userId = (req as CustomRequest).user._id;
+    await removeProperty(propertyId, userId);
+    res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateProperty = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const propertyId = new mongoose.Types.ObjectId(req.params.propertyId);
+    const userId = (req as CustomRequest).user._id;
+    await findPropertyAndUpdate(propertyId, userId, req.body);
+    res.status(200).json({ message: " Updated successfully" });
   } catch (error) {
     next(error);
   }
