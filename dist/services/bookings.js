@@ -14,10 +14,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteBooking = exports.findBookingAndUpdate = exports.getBookingsByUserOrProperty = exports.addBooking = void 0;
 const bookingSchema_1 = __importDefault(require("../models/bookingSchema"));
+const propertySchema_1 = __importDefault(require("../models/propertySchema"));
 const checkUser_1 = require("../utils/checkUser");
-const addBooking = (userId, propertyId, bookingDetails) => {
-    return bookingSchema_1.default.create(Object.assign(Object.assign({}, bookingDetails), { user: userId, property: propertyId }));
-};
+const addBooking = (userId, propertyId, bookingDetails) => __awaiter(void 0, void 0, void 0, function* () {
+    const booking = yield bookingSchema_1.default.create(Object.assign(Object.assign({}, bookingDetails), { user: userId, property: propertyId }));
+    const property = yield propertySchema_1.default.findById(propertyId);
+    property === null || property === void 0 ? void 0 : property.bookings.push(booking._id);
+    yield (property === null || property === void 0 ? void 0 : property.save());
+    return booking;
+});
 exports.addBooking = addBooking;
 const getBookingsByUserOrProperty = (id, type, query) => {
     const filterObject = {};

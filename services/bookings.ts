@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 import { IBooking } from "../interfaces";
 import Booking from "../models/bookingSchema";
+import Property from "../models/propertySchema";
 import { checkUser } from "../utils/checkUser";
 
-export const addBooking = (
+export const addBooking = async (
   userId: mongoose.Types.ObjectId,
   propertyId: mongoose.Types.ObjectId,
   bookingDetails: {
@@ -13,11 +14,17 @@ export const addBooking = (
     totalPrice: number;
   }
 ) => {
-  return Booking.create({
+  const booking = await Booking.create({
     ...bookingDetails,
     user: userId,
     property: propertyId,
   });
+
+  const property = await Property.findById(propertyId);
+  property?.bookings.push(booking._id);
+  await property?.save();
+
+  return booking;
 };
 
 export const getBookingsByUserOrProperty = (

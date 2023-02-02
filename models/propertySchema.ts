@@ -47,6 +47,10 @@ const propertySchema = new mongoose.Schema(
         message: "{VALUE} is not supported",
       },
     },
+    bookings: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Booking",
+    },
   },
   {
     timestamps: true,
