@@ -78,6 +78,10 @@ export const findProperties = async (query: any) => {
     return Property.find({}, "-__v").populate("createdBy", "-password -__v");
   }
 
+  const page = +query.page || 1;
+  const limit = +query.limit || 30;
+  const skip = (page - 1) * limit;
+
   return Property.aggregate([
     {
       $match: {
@@ -170,6 +174,12 @@ export const findProperties = async (query: any) => {
     },
     {
       $match: { totalBookings: 0 },
+    },
+    {
+      $limit: limit,
+    },
+    {
+      $skip: skip,
     },
     {
       $unset: [

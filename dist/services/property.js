@@ -75,6 +75,9 @@ const findProperties = (query) => __awaiter(void 0, void 0, void 0, function* ()
     if (!filters.length || !datesFilter.checkIn) {
         return propertySchema_1.default.find({}, "-__v").populate("createdBy", "-password -__v");
     }
+    const page = +query.page || 1;
+    const limit = +query.limit || 30;
+    const skip = (page - 1) * limit;
     return propertySchema_1.default.aggregate([
         {
             $match: {
@@ -167,6 +170,12 @@ const findProperties = (query) => __awaiter(void 0, void 0, void 0, function* ()
         },
         {
             $match: { totalBookings: 0 },
+        },
+        {
+            $limit: limit,
+        },
+        {
+            $skip: skip,
         },
         {
             $unset: [

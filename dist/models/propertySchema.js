@@ -54,6 +54,14 @@ const propertySchema = new mongoose_1.default.Schema({
         type: [mongoose_1.default.Schema.Types.ObjectId],
         ref: "Booking",
     },
+    reviews: {
+        type: [mongoose_1.default.Schema.Types.ObjectId],
+        ref: "Review",
+    },
+    ratings: {
+        type: [mongoose_1.default.Schema.Types.ObjectId],
+        ref: "Rating",
+    },
 }, {
     timestamps: true,
 });
