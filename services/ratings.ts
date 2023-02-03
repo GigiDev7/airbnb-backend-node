@@ -1,13 +1,20 @@
 import mongoose from "mongoose";
+import Property from "../models/propertySchema";
 import Rating from "../models/ratingSchema";
 import { checkUser } from "../utils/checkUser";
 
-export const addRating = (
+export const addRating = async (
   userId: mongoose.Types.ObjectId,
   propertyId: mongoose.Types.ObjectId,
   rating: number
 ) => {
-  return Rating.create({ user: userId, propertyId, rating });
+  const newRating = await Rating.create({ user: userId, propertyId, rating });
+  const property = await Property.findById(propertyId);
+
+  property?.ratings.push(newRating._id);
+  await property?.save();
+
+  return newRating;
 };
 
 export const patchRating = async (

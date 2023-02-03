@@ -13,16 +13,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.patchReview = exports.removeReview = exports.createReview = void 0;
+const propertySchema_1 = __importDefault(require("../models/propertySchema"));
 const reviewSchema_1 = __importDefault(require("../models/reviewSchema"));
 const checkUser_1 = require("../utils/checkUser");
-const createReview = (propertyId, userId, review) => {
-    return reviewSchema_1.default.create({ user: userId, review, propertyId });
-};
+const createReview = (propertyId, userId, review) => __awaiter(void 0, void 0, void 0, function* () {
+    const newReview = yield reviewSchema_1.default.create({ user: userId, review, propertyId });
+    const property = yield propertySchema_1.default.findById(propertyId);
+    property === null || property === void 0 ? void 0 : property.reviews.push(newReview._id);
+    yield (property === null || property === void 0 ? void 0 : property.save());
+    return newReview;
+});
 exports.createReview = createReview;
 const removeReview = (reviewId, userId) => __awaiter(void 0, void 0, void 0, function* () {
     const review = yield reviewSchema_1.default.findById(reviewId);
     (0, checkUser_1.checkUser)(review, userId, "Review");
     yield review.deleteOne();
+    const property = yield propertySchema_1.default.findById(review === null || review === void 0 ? void 0 : review.propertyId);
+    if (property) {
+        property.reviews = property === null || property === void 0 ? void 0 : property.reviews.filter((id) => !id.equals(review._id));
+    }
+    yield (property === null || property === void 0 ? void 0 : property.save());
 });
 exports.removeReview = removeReview;
 const patchReview = (reviewId, userId, review) => __awaiter(void 0, void 0, void 0, function* () {

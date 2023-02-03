@@ -13,11 +13,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.patchRating = exports.addRating = void 0;
+const propertySchema_1 = __importDefault(require("../models/propertySchema"));
 const ratingSchema_1 = __importDefault(require("../models/ratingSchema"));
 const checkUser_1 = require("../utils/checkUser");
-const addRating = (userId, propertyId, rating) => {
-    return ratingSchema_1.default.create({ user: userId, propertyId, rating });
-};
+const addRating = (userId, propertyId, rating) => __awaiter(void 0, void 0, void 0, function* () {
+    const newRating = yield ratingSchema_1.default.create({ user: userId, propertyId, rating });
+    const property = yield propertySchema_1.default.findById(propertyId);
+    property === null || property === void 0 ? void 0 : property.ratings.push(newRating._id);
+    yield (property === null || property === void 0 ? void 0 : property.save());
+    return newRating;
+});
 exports.addRating = addRating;
 const patchRating = (ratingId, userId, rating) => __awaiter(void 0, void 0, void 0, function* () {
     const doc = yield ratingSchema_1.default.findById(ratingId);
