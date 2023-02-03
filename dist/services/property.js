@@ -94,6 +94,22 @@ const findProperties = (query) => __awaiter(void 0, void 0, void 0, function* ()
         },
         {
             $lookup: {
+                from: "reviews",
+                foreignField: "_id",
+                localField: "reviews",
+                as: "reviews",
+            },
+        },
+        {
+            $lookup: {
+                from: "ratings",
+                foreignField: "_id",
+                localField: "ratings",
+                as: "ratings",
+            },
+        },
+        {
+            $lookup: {
                 from: "bookings",
                 foreignField: "_id",
                 localField: "bookings",
@@ -131,41 +147,14 @@ const findProperties = (query) => __awaiter(void 0, void 0, void 0, function* ()
                 ],
             },
         },
-        /*  {
-          $addFields: {
-            bookings: {
-              $filter: {
-                input: "$bookings",
-                as: "booking",
-                cond: {
-                  $or: [
-                    {
-                      $and: [
-                        { $gte: ["$$booking.checkOut", datesFilter.checkIn] },
-                        { $lte: ["$$booking.checkIn", datesFilter.checkIn] },
-                      ],
-                    },
-                    {
-                      $and: [
-                        { $gte: ["$$booking.checkOut", datesFilter.checkOut] },
-                        { $lte: ["$$booking.checkIn", datesFilter.checkOut] },
-                      ],
-                    },
-                    {
-                      $and: [
-                        { $lte: ["$$booking.checkOut", datesFilter.checkOut] },
-                        { $gte: ["$$booking.checkIn", datesFilter.checkIn] },
-                      ],
-                    },
-                  ],
-                },
-              },
-            },
-          },
-        }, */
         {
             $addFields: {
                 totalBookings: { $size: "$bookings" },
+            },
+        },
+        {
+            $addFields: {
+                avgRating: { $avg: "$ratings.rating" },
             },
         },
         {
@@ -185,6 +174,10 @@ const findProperties = (query) => __awaiter(void 0, void 0, void 0, function* ()
                 "createdBy.password",
                 "createdBy.favourites",
                 "createdBy.__v",
+                "ratings.propertyId",
+                "reviews.propertyId",
+                "ratings.__v",
+                "reviews.__v",
             ],
         },
     ]);

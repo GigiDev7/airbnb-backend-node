@@ -98,6 +98,22 @@ export const findProperties = async (query: any) => {
     },
     {
       $lookup: {
+        from: "reviews",
+        foreignField: "_id",
+        localField: "reviews",
+        as: "reviews",
+      },
+    },
+    {
+      $lookup: {
+        from: "ratings",
+        foreignField: "_id",
+        localField: "ratings",
+        as: "ratings",
+      },
+    },
+    {
+      $lookup: {
         from: "bookings",
         foreignField: "_id",
         localField: "bookings",
@@ -135,41 +151,14 @@ export const findProperties = async (query: any) => {
         ],
       },
     },
-    /*  {
-      $addFields: {
-        bookings: {
-          $filter: {
-            input: "$bookings",
-            as: "booking",
-            cond: {
-              $or: [
-                {
-                  $and: [
-                    { $gte: ["$$booking.checkOut", datesFilter.checkIn] },
-                    { $lte: ["$$booking.checkIn", datesFilter.checkIn] },
-                  ],
-                },
-                {
-                  $and: [
-                    { $gte: ["$$booking.checkOut", datesFilter.checkOut] },
-                    { $lte: ["$$booking.checkIn", datesFilter.checkOut] },
-                  ],
-                },
-                {
-                  $and: [
-                    { $lte: ["$$booking.checkOut", datesFilter.checkOut] },
-                    { $gte: ["$$booking.checkIn", datesFilter.checkIn] },
-                  ],
-                },
-              ],
-            },
-          },
-        },
-      },
-    }, */
     {
       $addFields: {
         totalBookings: { $size: "$bookings" },
+      },
+    },
+    {
+      $addFields: {
+        avgRating: { $avg: "$ratings.rating" },
       },
     },
     {
@@ -189,6 +178,10 @@ export const findProperties = async (query: any) => {
         "createdBy.password",
         "createdBy.favourites",
         "createdBy.__v",
+        "ratings.propertyId",
+        "reviews.propertyId",
+        "ratings.__v",
+        "reviews.__v",
       ],
     },
   ]);
