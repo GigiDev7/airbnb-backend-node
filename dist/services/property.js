@@ -72,7 +72,7 @@ const findProperties = (query) => __awaiter(void 0, void 0, void 0, function* ()
         datesFilter.checkIn = new Date(query.checkIn);
         datesFilter.checkOut = new Date(query.checkOut);
     }
-    if (!filters.length) {
+    if (!filters.length || !datesFilter.checkIn) {
         return propertySchema_1.default.find({}, "-__v").populate("createdBy", "-password -__v");
     }
     return propertySchema_1.default.aggregate([
@@ -97,43 +97,69 @@ const findProperties = (query) => __awaiter(void 0, void 0, void 0, function* ()
                 as: "bookings",
                 pipeline: [
                     {
-                        $match: { checkOut: { $gte: new Date() } },
-                    },
-                ],
-            },
-        },
-        {
-            $addFields: {
-                bookings: {
-                    $filter: {
-                        input: "$bookings",
-                        as: "booking",
-                        cond: {
-                            $or: [
+                        $match: {
+                            $and: [
+                                { checkOut: { $gte: new Date() } },
                                 {
-                                    $and: [
-                                        { $gte: ["$$booking.checkOut", datesFilter.checkIn] },
-                                        { $lte: ["$$booking.checkIn", datesFilter.checkIn] },
-                                    ],
-                                },
-                                {
-                                    $and: [
-                                        { $gte: ["$$booking.checkOut", datesFilter.checkOut] },
-                                        { $lte: ["$$booking.checkIn", datesFilter.checkOut] },
-                                    ],
-                                },
-                                {
-                                    $and: [
-                                        { $lte: ["$$booking.checkOut", datesFilter.checkOut] },
-                                        { $gte: ["$$booking.checkIn", datesFilter.checkIn] },
+                                    $or: [
+                                        {
+                                            $and: [
+                                                { checkOut: { $gte: datesFilter.checkIn } },
+                                                { checkIn: { $lte: datesFilter.checkIn } },
+                                            ],
+                                        },
+                                        {
+                                            $and: [
+                                                { checkOut: { $gte: datesFilter.checkOut } },
+                                                { checkIn: { $lte: datesFilter.checkOut } },
+                                            ],
+                                        },
+                                        {
+                                            $and: [
+                                                { checkOut: { $lte: datesFilter.checkOut } },
+                                                { checkIn: { $gte: datesFilter.checkIn } },
+                                            ],
+                                        },
                                     ],
                                 },
                             ],
                         },
                     },
-                },
+                ],
             },
         },
+        /*  {
+          $addFields: {
+            bookings: {
+              $filter: {
+                input: "$bookings",
+                as: "booking",
+                cond: {
+                  $or: [
+                    {
+                      $and: [
+                        { $gte: ["$$booking.checkOut", datesFilter.checkIn] },
+                        { $lte: ["$$booking.checkIn", datesFilter.checkIn] },
+                      ],
+                    },
+                    {
+                      $and: [
+                        { $gte: ["$$booking.checkOut", datesFilter.checkOut] },
+                        { $lte: ["$$booking.checkIn", datesFilter.checkOut] },
+                      ],
+                    },
+                    {
+                      $and: [
+                        { $lte: ["$$booking.checkOut", datesFilter.checkOut] },
+                        { $gte: ["$$booking.checkIn", datesFilter.checkIn] },
+                      ],
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        }, */
         {
             $addFields: {
                 totalBookings: { $size: "$bookings" },

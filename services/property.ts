@@ -74,7 +74,7 @@ export const findProperties = async (query: any) => {
     datesFilter.checkOut = new Date(query.checkOut);
   }
 
-  if (!filters.length) {
+  if (!filters.length || !datesFilter.checkIn) {
     return Property.find({}, "-__v").populate("createdBy", "-password -__v");
   }
 
@@ -100,12 +100,38 @@ export const findProperties = async (query: any) => {
         as: "bookings",
         pipeline: [
           {
-            $match: { checkOut: { $gte: new Date() } },
+            $match: {
+              $and: [
+                { checkOut: { $gte: new Date() } },
+                {
+                  $or: [
+                    {
+                      $and: [
+                        { checkOut: { $gte: datesFilter.checkIn } },
+                        { checkIn: { $lte: datesFilter.checkIn } },
+                      ],
+                    },
+                    {
+                      $and: [
+                        { checkOut: { $gte: datesFilter.checkOut } },
+                        { checkIn: { $lte: datesFilter.checkOut } },
+                      ],
+                    },
+                    {
+                      $and: [
+                        { checkOut: { $lte: datesFilter.checkOut } },
+                        { checkIn: { $gte: datesFilter.checkIn } },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
           },
         ],
       },
     },
-    {
+    /*  {
       $addFields: {
         bookings: {
           $filter: {
@@ -136,7 +162,7 @@ export const findProperties = async (query: any) => {
           },
         },
       },
-    },
+    }, */
     {
       $addFields: {
         totalBookings: { $size: "$bookings" },
