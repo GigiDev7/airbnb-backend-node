@@ -31,41 +31,32 @@ const createProperty = (propertyData) => {
 };
 exports.createProperty = createProperty;
 const findProperties = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    /* const filterObject: any = {}; */
     const filters = [];
     const datesFilter = {};
     if (query.city) {
-        /* filterObject["location.city"] = query.city; */
         filters.push({ "location.city": query.city });
     }
     if (query.ownerId) {
-        /*  filterObject.createdBy = query.ownerId; */
         filters.push({ createdBy: new mongoose_1.default.Types.ObjectId(query.ownerId) });
     }
     if (query.guests) {
-        /* filterObject.maxGuests = { $gte: query.guests }; */
         filters.push({ maxGuests: { $gte: +query.guests } });
     }
     if (query.beds) {
-        /* filterObject.bedsQuantity = { $gte: query.beds }; */
         filters.push({ bedsQuantity: { $gte: +query.beds } });
     }
     if (query.minPrice) {
-        /* filterObject.price = { $gte: query.minPrice }; */
         filters.push({ price: { $gte: +query.minPrice } });
     }
     if (query.maxPrice) {
-        /* filterObject.price = { ...filterObject.price, $lte: +query.maxPrice }; */
         filters[filters.length - 1].price = Object.assign(Object.assign({}, filters[filters.length - 1].price), { $lte: +query.maxPrice });
     }
     if (query.propertyType) {
         const propertyTypes = query.propertyType.split(",");
-        /* filterObject.propertyType = { $in: propertyTypes }; */
         filters.push({ propertyType: { $in: propertyTypes } });
     }
     if (query.typeOfPlace) {
         const types = query.typeOfPlace.split(",");
-        /* filterObject.typeOfPlace = { $in: types }; */
         filters.push({ typeOfPlace: { $in: types } });
     }
     if (query.checkIn && query.checkOut) {
