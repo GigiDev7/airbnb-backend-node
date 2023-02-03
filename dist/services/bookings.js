@@ -48,5 +48,10 @@ const deleteBooking = (bookingId, userId) => __awaiter(void 0, void 0, void 0, f
     const booking = yield bookingSchema_1.default.findById(bookingId);
     (0, checkUser_1.checkUser)(booking, userId, "Booking");
     yield booking.deleteOne();
+    const property = yield propertySchema_1.default.findById(booking === null || booking === void 0 ? void 0 : booking.property);
+    if (property) {
+        property.bookings = property.bookings.filter((id) => !id.equals(booking._id));
+    }
+    yield property.save();
 });
 exports.deleteBooking = deleteBooking;

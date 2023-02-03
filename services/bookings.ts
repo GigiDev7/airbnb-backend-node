@@ -68,4 +68,13 @@ export const deleteBooking = async (
   checkUser(booking, userId, "Booking");
 
   await booking!.deleteOne();
+
+  const property = await Property.findById(booking?.property);
+  if (property) {
+    property.bookings = property.bookings.filter(
+      (id) => !id.equals(booking!._id)
+    );
+  }
+
+  await property!.save();
 };
