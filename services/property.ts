@@ -97,11 +97,30 @@ export const findProperties = async (query: any) => {
       },
     },
     {
+      $unwind: { path: "$createdBy" },
+    },
+    {
       $lookup: {
         from: "reviews",
         foreignField: "_id",
         localField: "reviews",
         as: "reviews",
+        pipeline: [
+          {
+            $lookup: {
+              from: "users",
+              foreignField: "_id",
+              localField: "user",
+              as: "user",
+            },
+          },
+          {
+            $unwind: { path: "$user" },
+          },
+          {
+            $unset: ["user.password", "user.__v", "user.favourites"],
+          },
+        ],
       },
     },
     {
@@ -110,6 +129,22 @@ export const findProperties = async (query: any) => {
         foreignField: "_id",
         localField: "ratings",
         as: "ratings",
+        pipeline: [
+          {
+            $lookup: {
+              from: "users",
+              foreignField: "_id",
+              localField: "user",
+              as: "user",
+            },
+          },
+          {
+            $unwind: { path: "$user" },
+          },
+          {
+            $unset: ["user.password", "user.__v", "user.favourites"],
+          },
+        ],
       },
     },
     {

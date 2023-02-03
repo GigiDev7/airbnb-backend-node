@@ -93,11 +93,30 @@ const findProperties = (query) => __awaiter(void 0, void 0, void 0, function* ()
             },
         },
         {
+            $unwind: { path: "$createdBy" },
+        },
+        {
             $lookup: {
                 from: "reviews",
                 foreignField: "_id",
                 localField: "reviews",
                 as: "reviews",
+                pipeline: [
+                    {
+                        $lookup: {
+                            from: "users",
+                            foreignField: "_id",
+                            localField: "user",
+                            as: "user",
+                        },
+                    },
+                    {
+                        $unwind: { path: "$user" },
+                    },
+                    {
+                        $unset: ["user.password", "user.__v", "user.favourites"],
+                    },
+                ],
             },
         },
         {
@@ -106,6 +125,22 @@ const findProperties = (query) => __awaiter(void 0, void 0, void 0, function* ()
                 foreignField: "_id",
                 localField: "ratings",
                 as: "ratings",
+                pipeline: [
+                    {
+                        $lookup: {
+                            from: "users",
+                            foreignField: "_id",
+                            localField: "user",
+                            as: "user",
+                        },
+                    },
+                    {
+                        $unwind: { path: "$user" },
+                    },
+                    {
+                        $unset: ["user.password", "user.__v", "user.favourites"],
+                    },
+                ],
             },
         },
         {
