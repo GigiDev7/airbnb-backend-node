@@ -8,6 +8,7 @@ import propertyRouter from "./routes/property";
 import reviewsRouter from "./routes/reviews";
 import ratingsRouter from "./routes/ratings";
 import bookingsRouter from "./routes/bookings";
+import favouritesRouter from "./routes/favourites";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use("/property", propertyRouter);
 app.use("/reviews", reviewsRouter);
 app.use("/ratings", ratingsRouter);
 app.use("/bookings", bookingsRouter);
+app.use("/favourites", favouritesRouter);
 
 app.use(errorHandler);
 

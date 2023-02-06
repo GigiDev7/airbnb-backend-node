@@ -13,6 +13,7 @@ const property_1 = __importDefault(require("./routes/property"));
 const reviews_1 = __importDefault(require("./routes/reviews"));
 const ratings_1 = __importDefault(require("./routes/ratings"));
 const bookings_1 = __importDefault(require("./routes/bookings"));
+const favourites_1 = __importDefault(require("./routes/favourites"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -22,6 +23,7 @@ app.use("/property", property_1.default);
 app.use("/reviews", reviews_1.default);
 app.use("/ratings", ratings_1.default);
 app.use("/bookings", bookings_1.default);
+app.use("/favourites", favourites_1.default);
 app.use(errorHandler_1.errorHandler);
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
