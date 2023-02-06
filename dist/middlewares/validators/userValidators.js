@@ -31,4 +31,16 @@ exports.registerValidator = (0, express_validator_1.checkSchema)({
             errorMessage: "Password must be at least 6 characters long",
         },
     },
+    firstname: {
+        in: ["body"],
+        isString: {
+            errorMessage: "Firstname is required",
+        },
+    },
+    lastname: {
+        in: ["body"],
+        isString: {
+            errorMessage: "Lastname is required",
+        },
+    },
 });
