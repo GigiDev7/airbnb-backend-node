@@ -3,7 +3,10 @@ import multer from "multer";
 import { CustomRequest } from "../interfaces";
 import { protectAuth } from "../middlewares/protectAuth";
 import fs from "fs";
-import { uploadPropertyImages } from "../controllers/images";
+import {
+  uploadProfileImage,
+  uploadPropertyImages,
+} from "../controllers/images";
 
 const router = express.Router();
 
@@ -34,6 +37,7 @@ const upload = multer({ storage });
 
 router.use(protectAuth);
 
+router.post("", upload.single("profileImage"), uploadProfileImage);
 router.post("/:propertyId", upload.array("images"), uploadPropertyImages);
 
 export default router;

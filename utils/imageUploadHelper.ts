@@ -3,14 +3,16 @@ import path from "path";
 import mongoose from "mongoose";
 
 export const updateImageFiles = async (
-  propertyId: mongoose.Types.ObjectId,
-  images: string[]
+  images: string[],
+  type: "properties" | "users",
+  propertyId?: mongoose.Types.ObjectId,
+  userId?: mongoose.Types.ObjectId
 ) => {
   const imgDir = path.join(
     process.cwd(),
     "uploads",
-    "properties",
-    propertyId.toString()
+    type,
+    userId ? userId.toString() : propertyId!.toString()
   );
   const oldImages = await fs.readdir(imgDir);
   const newImages = images.map((img) => {

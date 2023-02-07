@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateImageFiles = void 0;
 const promises_1 = __importDefault(require("fs/promises"));
 const path_1 = __importDefault(require("path"));
-const updateImageFiles = (propertyId, images) => __awaiter(void 0, void 0, void 0, function* () {
-    const imgDir = path_1.default.join(process.cwd(), "uploads", "properties", propertyId.toString());
+const updateImageFiles = (images, type, propertyId, userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const imgDir = path_1.default.join(process.cwd(), "uploads", type, userId ? userId.toString() : propertyId.toString());
     const oldImages = yield promises_1.default.readdir(imgDir);
     const newImages = images.map((img) => {
         const ind = img.lastIndexOf("\\");
