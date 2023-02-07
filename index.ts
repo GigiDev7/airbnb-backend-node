@@ -9,6 +9,7 @@ import reviewsRouter from "./routes/reviews";
 import ratingsRouter from "./routes/ratings";
 import bookingsRouter from "./routes/bookings";
 import favouritesRouter from "./routes/favourites";
+import imagesRouter from "./routes/images";
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ const app: Express = express();
 
 app.use(express.json());
 app.use(cors());
+app.use("/uploads", express.static("uploads"));
 
 app.use("/user", userRouter);
 app.use("/property", propertyRouter);
@@ -23,6 +25,7 @@ app.use("/reviews", reviewsRouter);
 app.use("/ratings", ratingsRouter);
 app.use("/bookings", bookingsRouter);
 app.use("/favourites", favouritesRouter);
+app.use("/images", imagesRouter);
 
 app.use(errorHandler);
 
