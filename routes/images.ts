@@ -37,7 +37,7 @@ const upload = multer({ storage });
 
 router.use(protectAuth);
 
-router.post("", upload.single("profileImage"), uploadProfileImage);
 router.post("/:propertyId", upload.array("images"), uploadPropertyImages);
+router.post("", upload.single("profileImage"), uploadProfileImage);
 
 export default router;

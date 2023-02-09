@@ -7,12 +7,14 @@ const checkUser = (doc, userId, type) => {
         throw new customError_1.CustomError("NotFoundError", `${type} not found`);
     }
     if (type === "Property") {
-        if (!doc.cretedBy.equals(userId)) {
+        if (!doc.createdBy.equals(userId)) {
             throw new customError_1.CustomError("Authorization Error", "You are not authorized to continue");
         }
     }
-    if (!doc.user.equals(userId)) {
-        throw new customError_1.CustomError("Authorization Error", "You are not authorized to continue");
+    else {
+        if (!doc.user.equals(userId)) {
+            throw new customError_1.CustomError("Authorization Error", "You are not authorized to continue");
+        }
     }
 };
 exports.checkUser = checkUser;

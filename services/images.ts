@@ -26,6 +26,7 @@ export const updatePropertyImages = async (
     property.images = images as string[];
   } else {
     let paths = (files as Express.Multer.File[]).map((file) => file.path);
+
     if (images) {
       paths = [...paths, ...images];
       await updateImageFiles(paths, "properties", propertyId);

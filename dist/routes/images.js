@@ -31,6 +31,6 @@ const storage = multer_1.default.diskStorage({
 });
 const upload = (0, multer_1.default)({ storage });
 router.use(protectAuth_1.protectAuth);
-router.post("", upload.single("profileImage"), images_1.uploadProfileImage);
 router.post("/:propertyId", upload.array("images"), images_1.uploadPropertyImages);
+router.post("", upload.single("profileImage"), images_1.uploadProfileImage);
 exports.default = router;

@@ -11,18 +11,18 @@ export const checkUser = (
   }
 
   if (type === "Property") {
-    if (!doc.cretedBy.equals(userId)) {
+    if (!doc.createdBy.equals(userId)) {
       throw new CustomError(
         "Authorization Error",
         "You are not authorized to continue"
       );
     }
-  }
-
-  if (!doc.user.equals(userId)) {
-    throw new CustomError(
-      "Authorization Error",
-      "You are not authorized to continue"
-    );
+  } else {
+    if (!doc.user.equals(userId)) {
+      throw new CustomError(
+        "Authorization Error",
+        "You are not authorized to continue"
+      );
+    }
   }
 };
