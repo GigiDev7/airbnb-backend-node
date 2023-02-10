@@ -29,8 +29,8 @@ export const addFavourite = async (
   try {
     const userId = (req as CustomRequest).user._id;
     const propertyId = new mongoose.Types.ObjectId(req.body.propertyId);
-    await addToFavourites(userId, propertyId);
-    res.status(201).json({ message: "Successfully added to favorites" });
+    const updatedUser = await addToFavourites(userId, propertyId);
+    res.status(201).json(updatedUser);
   } catch (error) {
     next(error);
   }
@@ -44,8 +44,8 @@ export const removeFavourite = async (
   try {
     const userId = (req as CustomRequest).user._id;
     const propertyId = new mongoose.Types.ObjectId(req.body.propertyId);
-    await removeFromFavourites(userId, propertyId);
-    res.status(200).json({ message: "Successfully removed from favorites" });
+    const user = await removeFromFavourites(userId, propertyId);
+    res.status(200).json(user);
   } catch (error) {
     next(error);
   }

@@ -36,8 +36,7 @@ const signIn = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
     try {
         const { user, token } = yield (0, user_1.loginUser)(req.body.email, req.body.password);
         const _a = user._doc, { password, __v } = _a, userData = __rest(_a, ["password", "__v"]);
-        userData.token = token;
-        res.status(200).json(userData);
+        res.status(200).json({ user: userData, token });
     }
     catch (error) {
         next(error);

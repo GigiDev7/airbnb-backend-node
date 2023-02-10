@@ -22,9 +22,7 @@ export const signIn = async (
   try {
     const { user, token } = await loginUser(req.body.email, req.body.password);
     const { password, __v, ...userData } = (user as any)._doc;
-
-    userData.token = token;
-    res.status(200).json(userData);
+    res.status(200).json({ user: userData, token });
   } catch (error) {
     next(error);
   }

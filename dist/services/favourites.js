@@ -26,10 +26,11 @@ const getFavouritesByUser = (userId) => __awaiter(void 0, void 0, void 0, functi
 });
 exports.getFavouritesByUser = getFavouritesByUser;
 const addToFavourites = (userId, propertyId) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield userSchema_1.default.findById(userId);
+    const user = yield userSchema_1.default.findById(userId, { password: 0, __v: 0 });
     if (user) {
         user.favourites.push(propertyId);
         yield user.save();
+        return user;
     }
     else {
         throw new customError_1.CustomError("NotFoundError", " User not found");
@@ -37,10 +38,11 @@ const addToFavourites = (userId, propertyId) => __awaiter(void 0, void 0, void 0
 });
 exports.addToFavourites = addToFavourites;
 const removeFromFavourites = (userId, propertyId) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield userSchema_1.default.findById(userId);
+    const user = yield userSchema_1.default.findById(userId, "-password -__v");
     if (user) {
         user.favourites = user.favourites.filter((id) => !id.equals(propertyId));
         yield user.save();
+        return user;
     }
     else {
         throw new customError_1.CustomError("NotFoundError", " User not found");

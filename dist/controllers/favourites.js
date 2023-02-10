@@ -30,8 +30,8 @@ const addFavourite = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
     try {
         const userId = req.user._id;
         const propertyId = new mongoose_1.default.Types.ObjectId(req.body.propertyId);
-        yield (0, favourites_1.addToFavourites)(userId, propertyId);
-        res.status(201).json({ message: "Successfully added to favorites" });
+        const updatedUser = yield (0, favourites_1.addToFavourites)(userId, propertyId);
+        res.status(201).json(updatedUser);
     }
     catch (error) {
         next(error);
@@ -42,8 +42,8 @@ const removeFavourite = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
     try {
         const userId = req.user._id;
         const propertyId = new mongoose_1.default.Types.ObjectId(req.body.propertyId);
-        yield (0, favourites_1.removeFromFavourites)(userId, propertyId);
-        res.status(200).json({ message: "Successfully removed from favorites" });
+        const user = yield (0, favourites_1.removeFromFavourites)(userId, propertyId);
+        res.status(200).json(user);
     }
     catch (error) {
         next(error);
