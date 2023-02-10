@@ -38,10 +38,8 @@ exports.getProperties = getProperties;
 const getSingleProperty = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const propertyId = new mongoose_1.default.Types.ObjectId(req.params.propertyId);
-        const result = yield (0, property_1.findSingleProperty)(propertyId);
-        res
-            .status(200)
-            .json({ property: result[0], ratings: result[1], reviews: result[2] });
+        const property = yield (0, property_1.findSingleProperty)(propertyId);
+        res.status(200).json(property);
     }
     catch (error) {
         next(error);

@@ -15,8 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.findPropertyAndUpdate = exports.removeProperty = exports.findSingleProperty = exports.findProperties = exports.createProperty = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const propertySchema_1 = __importDefault(require("../models/propertySchema"));
-const ratingSchema_1 = __importDefault(require("../models/ratingSchema"));
-const reviewSchema_1 = __importDefault(require("../models/reviewSchema"));
 const customError_1 = require("../utils/customError");
 const checkPropertyHelper = (property, userId) => {
     if (!property) {
@@ -210,17 +208,90 @@ const findProperties = (query) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.findProperties = findProperties;
 const findSingleProperty = (propertyId) => __awaiter(void 0, void 0, void 0, function* () {
-    const property = propertySchema_1.default.findById(propertyId)
-        .populate("createdBy", "-password -__v")
-        .exec();
-    const ratings = ratingSchema_1.default.find({ propertyId })
-        .populate("user", "-password -__v")
-        .exec();
-    const reviews = reviewSchema_1.default.find({ propertyId })
-        .populate("user", "-password -__v")
-        .exec();
-    const result = yield Promise.all([property, ratings, reviews]);
-    return result;
+    const property = yield propertySchema_1.default.aggregate([
+        {
+            $match: { _id: propertyId },
+        },
+        {
+            $lookup: {
+                from: "users",
+                foreignField: "_id",
+                localField: "createdBy",
+                as: "createdBy",
+            },
+        },
+        {
+            $unwind: { path: "$createdBy" },
+        },
+        {
+            $lookup: {
+                from: "reviews",
+                foreignField: "_id",
+                localField: "reviews",
+                as: "reviews",
+                pipeline: [
+                    {
+                        $lookup: {
+                            from: "users",
+                            foreignField: "_id",
+                            localField: "user",
+                            as: "user",
+                        },
+                    },
+                    {
+                        $unwind: { path: "$user" },
+                    },
+                    {
+                        $unset: ["user.password", "user.__v", "user.favourites"],
+                    },
+                ],
+            },
+        },
+        {
+            $lookup: {
+                from: "ratings",
+                foreignField: "_id",
+                localField: "ratings",
+                as: "ratings",
+                pipeline: [
+                    {
+                        $lookup: {
+                            from: "users",
+                            foreignField: "_id",
+                            localField: "user",
+                            as: "user",
+                        },
+                    },
+                    {
+                        $unwind: { path: "$user" },
+                    },
+                    {
+                        $unset: ["user.password", "user.__v", "user.favourites"],
+                    },
+                ],
+            },
+        },
+        {
+            $addFields: {
+                avgRating: { $avg: "$ratings.rating" },
+            },
+        },
+        {
+            $unset: [
+                "__v",
+                "totalBookings",
+                "bookings",
+                "createdBy.password",
+                "createdBy.favourites",
+                "createdBy.__v",
+                "ratings.propertyId",
+                "reviews.propertyId",
+                "ratings.__v",
+                "reviews.__v",
+            ],
+        },
+    ]);
+    return property[0];
 });
 exports.findSingleProperty = findSingleProperty;
 const removeProperty = (propertyId, userId) => __awaiter(void 0, void 0, void 0, function* () {

@@ -45,10 +45,8 @@ export const getSingleProperty = async (
 ) => {
   try {
     const propertyId = new mongoose.Types.ObjectId(req.params.propertyId);
-    const result = await findSingleProperty(propertyId);
-    res
-      .status(200)
-      .json({ property: result[0], ratings: result[1], reviews: result[2] });
+    const property = await findSingleProperty(propertyId);
+    res.status(200).json(property);
   } catch (error) {
     next(error);
   }

@@ -216,18 +216,91 @@ export const findProperties = async (query: any) => {
 export const findSingleProperty = async (
   propertyId: mongoose.Types.ObjectId
 ) => {
-  const property = Property.findById(propertyId)
-    .populate("createdBy", "-password -__v")
-    .exec();
-  const ratings = Rating.find({ propertyId })
-    .populate("user", "-password -__v")
-    .exec();
-  const reviews = Review.find({ propertyId })
-    .populate("user", "-password -__v")
-    .exec();
+  const property = await Property.aggregate([
+    {
+      $match: { _id: propertyId },
+    },
+    {
+      $lookup: {
+        from: "users",
+        foreignField: "_id",
+        localField: "createdBy",
+        as: "createdBy",
+      },
+    },
+    {
+      $unwind: { path: "$createdBy" },
+    },
+    {
+      $lookup: {
+        from: "reviews",
+        foreignField: "_id",
+        localField: "reviews",
+        as: "reviews",
+        pipeline: [
+          {
+            $lookup: {
+              from: "users",
+              foreignField: "_id",
+              localField: "user",
+              as: "user",
+            },
+          },
+          {
+            $unwind: { path: "$user" },
+          },
+          {
+            $unset: ["user.password", "user.__v", "user.favourites"],
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: "ratings",
+        foreignField: "_id",
+        localField: "ratings",
+        as: "ratings",
+        pipeline: [
+          {
+            $lookup: {
+              from: "users",
+              foreignField: "_id",
+              localField: "user",
+              as: "user",
+            },
+          },
+          {
+            $unwind: { path: "$user" },
+          },
+          {
+            $unset: ["user.password", "user.__v", "user.favourites"],
+          },
+        ],
+      },
+    },
+    {
+      $addFields: {
+        avgRating: { $avg: "$ratings.rating" },
+      },
+    },
+    {
+      $unset: [
+        "__v",
+        "totalBookings",
+        "bookings",
+        "createdBy.password",
+        "createdBy.favourites",
+        "createdBy.__v",
+        "ratings.propertyId",
+        "reviews.propertyId",
+        "ratings.__v",
+        "reviews.__v",
+      ],
+    },
+  ]);
 
-  const result = await Promise.all([property, ratings, reviews]);
-  return result;
+  return property[0];
 };
 
 export const removeProperty = async (
