@@ -43,6 +43,12 @@ const findProperties = (query) => __awaiter(void 0, void 0, void 0, function* ()
     if (query.beds) {
         filters.push({ bedsQuantity: { $gte: +query.beds } });
     }
+    if (query.bedrooms) {
+        filters.push({ "rooms.bedrooms": { $gte: +query.bedrooms } });
+    }
+    if (query.bathrooms) {
+        filters.push({ "rooms.bathrooms": { $gte: +query.bathrooms } });
+    }
     if (query.minPrice) {
         filters.push({ price: { $gte: +query.minPrice } });
     }
