@@ -67,7 +67,7 @@ const findProperties = (query) => __awaiter(void 0, void 0, void 0, function* ()
         datesFilter.checkIn = new Date(query.checkIn);
         datesFilter.checkOut = new Date(query.checkOut);
     }
-    if (!filters.length || !datesFilter.checkIn) {
+    if (!filters.length && !datesFilter.checkIn) {
         return propertySchema_1.default.find({}, "-__v").populate("createdBy", "-password -__v");
     }
     const page = +query.page || 1;

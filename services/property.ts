@@ -71,7 +71,7 @@ export const findProperties = async (query: any) => {
     datesFilter.checkOut = new Date(query.checkOut);
   }
 
-  if (!filters.length || !datesFilter.checkIn) {
+  if (!filters.length && !datesFilter.checkIn) {
     return Property.find({}, "-__v").populate("createdBy", "-password -__v");
   }
 
