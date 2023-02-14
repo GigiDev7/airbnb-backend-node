@@ -227,6 +227,14 @@ const findSingleProperty = (propertyId) => __awaiter(void 0, void 0, void 0, fun
             },
         },
         {
+            $lookup: {
+                from: "bookings",
+                foreignField: "_id",
+                localField: "bookings",
+                as: "bookings",
+            },
+        },
+        {
             $unwind: { path: "$createdBy" },
         },
         {
@@ -286,7 +294,6 @@ const findSingleProperty = (propertyId) => __awaiter(void 0, void 0, void 0, fun
             $unset: [
                 "__v",
                 "totalBookings",
-                "bookings",
                 "createdBy.password",
                 "createdBy.favourites",
                 "createdBy.__v",

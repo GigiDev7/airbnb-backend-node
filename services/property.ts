@@ -235,6 +235,14 @@ export const findSingleProperty = async (
       },
     },
     {
+      $lookup: {
+        from: "bookings",
+        foreignField: "_id",
+        localField: "bookings",
+        as: "bookings",
+      },
+    },
+    {
       $unwind: { path: "$createdBy" },
     },
     {
@@ -294,7 +302,6 @@ export const findSingleProperty = async (
       $unset: [
         "__v",
         "totalBookings",
-        "bookings",
         "createdBy.password",
         "createdBy.favourites",
         "createdBy.__v",
