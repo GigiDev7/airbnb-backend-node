@@ -16,13 +16,43 @@ exports.removeFromFavourites = exports.addToFavourites = exports.getFavouritesBy
 const userSchema_1 = __importDefault(require("../models/userSchema"));
 const customError_1 = require("../utils/customError");
 const getFavouritesByUser = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield userSchema_1.default.findById(userId).populate("favourites");
-    if (user) {
-        return user.favourites;
-    }
-    else {
-        throw new customError_1.CustomError("NotFoundError", " User not found");
-    }
+    const favourites = yield userSchema_1.default.aggregate([
+        {
+            $match: { _id: userId },
+        },
+        {
+            $lookup: {
+                from: "properties",
+                localField: "favourites",
+                foreignField: "_id",
+                as: "favourites",
+                pipeline: [
+                    {
+                        $lookup: {
+                            from: "ratings",
+                            localField: "ratings",
+                            foreignField: "_id",
+                            as: "ratings",
+                        },
+                    },
+                    {
+                        $addFields: {
+                            avgRating: { $avg: "$ratings.rating" },
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            $project: { favourites: 1 },
+        },
+    ]);
+    return favourites[0].favourites;
+    /* if (user) {
+      return user.favourites;
+    } else {
+      throw new CustomError("NotFoundError", " User not found");
+    } */
 });
 exports.getFavouritesByUser = getFavouritesByUser;
 const addToFavourites = (userId, propertyId) => __awaiter(void 0, void 0, void 0, function* () {

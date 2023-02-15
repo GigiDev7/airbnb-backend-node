@@ -3,13 +3,45 @@ import User from "../models/userSchema";
 import { CustomError } from "../utils/customError";
 
 export const getFavouritesByUser = async (userId: mongoose.Types.ObjectId) => {
-  const user = await User.findById(userId).populate("favourites");
+  const favourites = await User.aggregate([
+    {
+      $match: { _id: userId },
+    },
+    {
+      $lookup: {
+        from: "properties",
+        localField: "favourites",
+        foreignField: "_id",
+        as: "favourites",
+        pipeline: [
+          {
+            $lookup: {
+              from: "ratings",
+              localField: "ratings",
+              foreignField: "_id",
+              as: "ratings",
+            },
+          },
+          {
+            $addFields: {
+              avgRating: { $avg: "$ratings.rating" },
+            },
+          },
+        ],
+      },
+    },
+    {
+      $project: { favourites: 1 },
+    },
+  ]);
 
-  if (user) {
+  return favourites[0].favourites;
+
+  /* if (user) {
     return user.favourites;
   } else {
     throw new CustomError("NotFoundError", " User not found");
-  }
+  } */
 };
 
 export const addToFavourites = async (
