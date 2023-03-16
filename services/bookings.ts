@@ -44,7 +44,7 @@ export const getBookingsByUserOrProperty = (
     filterObject.checkOut = { $gte: new Date() };
   }
 
-  return Booking.find(filterObject);
+  return Booking.find(filterObject).populate("property user", "-user.password");
 };
 
 export const findBookingAndUpdate = async (

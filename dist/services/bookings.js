@@ -35,7 +35,7 @@ const getBookingsByUserOrProperty = (id, type, query) => {
     if (query.active) {
         filterObject.checkOut = { $gte: new Date() };
     }
-    return bookingSchema_1.default.find(filterObject);
+    return bookingSchema_1.default.find(filterObject).populate("property user", "-user.password");
 };
 exports.getBookingsByUserOrProperty = getBookingsByUserOrProperty;
 const findBookingAndUpdate = (bookingId, userId, bookingData) => __awaiter(void 0, void 0, void 0, function* () {
